@@ -16,12 +16,12 @@ export default function Home() {
     // You will need to replace 'YOUR_TEMPLATE_ID' and 'YOUR_PUBLIC_KEY' with actual values from EmailJS.
     emailjs.send(
       'service_8ziulu2', 
-      'YOUR_TEMPLATE_ID', 
+      'template_kd1ktqv', 
       { 
         user_email: email,
         message: 'New lead from Porquipine Digitals platform.'
       }, 
-      'YOUR_PUBLIC_KEY'
+      'oiA07oxzzeReFOtCz'
     )
     .then((result) => {
         alert(`System initialized. Lead captured for communication stream: ${email}`);
