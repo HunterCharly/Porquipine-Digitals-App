@@ -24,7 +24,7 @@ export default function Home() {
       'oiA07oxzzeReFOtCz'
     )
     .then((result) => {
-        alert(`System initialized. Lead captured for communication stream: ${email}`);
+        alert(`Thank you for reaching out to Porquipine Digitals ${email}`);
         setEmail('');
     })
     .catch((error) => {
