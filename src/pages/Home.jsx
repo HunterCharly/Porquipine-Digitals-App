@@ -2,14 +2,38 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { servicesData } from '../data/services';
 import * as LucideIcons from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 export default function Home() {
   const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleLeadGen = (e) => {
     e.preventDefault();
-    alert(`System initialized. Lead captured for communication stream: ${email}`);
-    setEmail('');
+    setIsSubmitting(true);
+
+    // Using the service ID provided. 
+    // You will need to replace 'YOUR_TEMPLATE_ID' and 'YOUR_PUBLIC_KEY' with actual values from EmailJS.
+    emailjs.send(
+      'service_8ziulu2', 
+      'YOUR_TEMPLATE_ID', 
+      { 
+        user_email: email,
+        message: 'New lead from Porquipine Digitals platform.'
+      }, 
+      'YOUR_PUBLIC_KEY'
+    )
+    .then((result) => {
+        alert(`System initialized. Lead captured for communication stream: ${email}`);
+        setEmail('');
+    })
+    .catch((error) => {
+        alert('Error initializing connection. Please verify your EmailJS Template ID and Public Key in App.jsx.');
+        console.error(error);
+    })
+    .finally(() => {
+        setIsSubmitting(false);
+    });
   };
 
   const portfolio = [
@@ -154,8 +178,8 @@ export default function Home() {
                     placeholder="sysadmin@enterprise.com" 
                   />
                 </div>
-                <button type="submit" className="w-full bg-yellow-500 text-black font-black uppercase tracking-[0.2em] py-5 hover:bg-white hover:text-black transition-colors flex justify-center items-center gap-2">
-                  Establish Connection <LucideIcons.Terminal className="w-5 h-5"/>
+                <button disabled={isSubmitting} type="submit" className="w-full bg-yellow-500 text-black font-black uppercase tracking-[0.2em] py-5 hover:bg-white hover:text-black transition-colors flex justify-center items-center gap-2 disabled:opacity-50 border-none">
+                  {isSubmitting ? 'Establishing Connection...' : 'Establish Connection'} <LucideIcons.Terminal className="w-5 h-5"/>
                 </button>
                 <p className="text-neutral-600 text-[10px] font-mono uppercase text-center mt-2">By submitting you agree to our automated lead tracking telemetry.</p>
               </form>
