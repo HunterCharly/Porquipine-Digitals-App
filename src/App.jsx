@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import { AnimatePresence, motion } from 'framer-motion';
 import Home from './pages/Home';
 import ServiceDetail from './pages/ServiceDetail';
+import PorcupineMascot from './components/PorcupineMascot';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -57,6 +58,9 @@ export default function App() {
 
         {/* Floating particles */}
         <Particles />
+
+        {/* Animated Porcupine Mascot — Navigation companion */}
+        <PorcupineMascot />
 
         {/* Minimal floating header — robin-thomas style fixed corners */}
         <header className="fixed top-0 left-0 right-0 z-50">
