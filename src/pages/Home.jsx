@@ -5,23 +5,24 @@ import { servicesData } from '../data/services';
 import * as LucideIcons from 'lucide-react';
 import emailjs from '@emailjs/browser';
 
-const pageVariants = {
+/* Animation presets */
+const pageTransition = {
   initial: { opacity: 0 },
-  animate: { opacity: 1, transition: { duration: 0.5, ease: 'easeOut' } },
-  exit: { opacity: 0, transition: { duration: 0.3 } }
+  animate: { opacity: 1, transition: { duration: 0.8, ease: 'easeOut' } },
+  exit: { opacity: 0, transition: { duration: 0.4 } }
 };
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 50 },
   visible: (i = 0) => ({
     opacity: 1, y: 0,
-    transition: { duration: 0.6, delay: i * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }
+    transition: { duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }
   })
 };
 
-const staggerContainer = {
+const stagger = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } }
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
 };
 
 export default function Home() {
@@ -31,99 +32,91 @@ export default function Home() {
   const handleLeadGen = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    emailjs.send(
-      'service_8ziulu2',
-      'YOUR_TEMPLATE_ID',
-      { user_email: email, message: 'New lead from Porquipine Digitals platform.' },
-      'YOUR_PUBLIC_KEY'
+    emailjs.send('service_8ziulu2', 'YOUR_TEMPLATE_ID',
+      { user_email: email, message: 'New lead from Porquipine Digitals.' }, 'YOUR_PUBLIC_KEY'
     )
     .then(() => { alert(`Connection established: ${email}`); setEmail(''); })
-    .catch((error) => { alert('Connection error. Please verify EmailJS config.'); console.error(error); })
-    .finally(() => { setIsSubmitting(false); });
+    .catch((err) => { alert('Connection error. Please verify EmailJS config.'); console.error(err); })
+    .finally(() => setIsSubmitting(false));
   };
 
   const portfolio = [
-    { title: "Web Architecture & UX", category: "Web Development", image: "/images/web-dev.png" },
-    { title: "Growth & Campaigns", category: "Digital Marketing", image: "/images/marketing.png" },
-    { title: "Corporate Identity", category: "Brand Building", image: "/images/branding.png" }
+    { title: "Web Architecture", category: "Development", image: "/images/web-dev.png" },
+    { title: "Growth Engine", category: "Marketing", image: "/images/marketing.png" },
+    { title: "Brand Identity", category: "Branding", image: "/images/branding.png" }
   ];
 
   return (
-    <motion.div className="flex flex-col" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+    <motion.div variants={pageTransition} initial="initial" animate="animate" exit="exit">
 
-      {/* ═══════════════════ HERO ═══════════════════ */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden border-b border-yellow-500/20">
-        {/* Rotating tech rings */}
-        <div className="absolute inset-0 z-0 flex items-center justify-center opacity-10 pointer-events-none">
-          <div className="w-[70vw] h-[70vw] max-w-3xl max-h-[48rem] rounded-full border border-yellow-500/40 animate-[spin_80s_linear_infinite]"></div>
-          <div className="absolute w-[50vw] h-[50vw] max-w-xl max-h-[32rem] rounded-full border border-dashed border-yellow-500/30 animate-[spin_50s_linear_infinite_reverse]"></div>
-        </div>
+      {/* ════════════════════════════════════════════════════════════
+          HERO — Immersive, atmospheric, generous spacing
+      ════════════════════════════════════════════════════════════ */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Ambient bloom orbs */}
+        <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] rounded-full bg-yellow-500/[0.04] blur-[120px] pointer-events-none animate-[drift_20s_ease-in-out_infinite]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-yellow-400/[0.03] blur-[100px] pointer-events-none animate-[drift_25s_ease-in-out_infinite_reverse]" />
 
-        <div className="container mx-auto px-6 relative z-10 text-center flex flex-col items-center">
+        <div className="container mx-auto px-8 relative z-10 text-center flex flex-col items-center max-w-4xl">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-yellow-500/30 bg-yellow-500/5 mb-10 backdrop-blur-sm"
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm mb-12"
           >
-            <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
-            <span className="text-yellow-500 text-xs font-medium tracking-[0.2em] uppercase">Global Operations Active</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-[glow-pulse_3s_ease-in-out_infinite]" />
+            <span className="text-white/40 text-[10px] font-medium tracking-[0.3em] uppercase">Systems Online • Global</span>
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 50, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tighter mb-8 uppercase leading-[0.9]"
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-[-0.04em] mb-8 leading-[0.95]"
           >
-            <span className="text-transparent bg-clip-text bg-gradient-to-br from-white via-neutral-200 to-neutral-500">Architecting</span>
+            <span className="text-white/90">Architecting</span>
             <br />
-            <span className="text-yellow-500" style={{ textShadow: '0 0 40px rgba(234,179,8,0.3)' }}>Digital Dominance</span>
+            <span className="text-yellow-500 bloom-glow-strong">Digital Dominance</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-            className="text-lg md:text-xl text-neutral-400 max-w-2xl mb-14 leading-relaxed text-balance"
+            transition={{ duration: 0.8, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-white/30 text-lg md:text-xl max-w-xl mb-16 leading-relaxed font-light"
           >
-            An end-to-end algorithmic approach to brand building, operations, and global digital presence.
+            End-to-end brand building, digital operations, and global market leadership — from concept to dominance.
           </motion.p>
 
           <motion.a
             href="#services"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.9 }}
-            whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(234,179,8,0.4)' }}
+            transition={{ duration: 0.6, delay: 1.1 }}
+            whileHover={{ scale: 1.03, boxShadow: '0 0 40px rgba(234,179,8,0.15)' }}
             whileTap={{ scale: 0.97 }}
-            className="group relative px-10 py-4 bg-yellow-500 text-black font-bold uppercase tracking-widest text-sm cursor-pointer overflow-hidden inline-flex items-center gap-2"
+            className="px-8 py-3.5 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-500/90 font-medium text-sm tracking-[0.15em] uppercase cursor-pointer backdrop-blur-sm hover:bg-yellow-500/15 hover:border-yellow-500/40 transition-all duration-500 flex items-center gap-3"
           >
-            <span className="relative z-10 flex items-center gap-2">Initialize Core <LucideIcons.ArrowRight className="w-4 h-4" /></span>
+            Explore Solutions <LucideIcons.ArrowDown className="w-4 h-4 animate-bounce" />
           </motion.a>
         </div>
       </section>
 
-      {/* ═══════════════════ SERVICES ═══════════════════ */}
-      <section id="services" className="py-32 relative">
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="mb-20 grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
-              <motion.h2 variants={fadeUp} className="text-sm text-yellow-500 font-medium tracking-[0.3em] uppercase mb-4">Service Modules</motion.h2>
-              <motion.h3 variants={fadeUp} custom={1} className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter">Strategic Implementation</motion.h3>
-            </motion.div>
-            <motion.p
-              initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
-              variants={fadeUp} custom={2}
-              className="text-neutral-400 text-sm max-w-md lg:justify-self-end"
-            >
-              Our comprehensive execution modules are engineered to scale your digital presence globally with minimal friction and maximum ROI.
-            </motion.p>
-          </div>
+      {/* ════════════════════════════════════════════════════════════
+          SERVICES — Glassmorphism cards, staggered reveal
+      ════════════════════════════════════════════════════════════ */}
+      <section id="services" className="py-40 relative">
+        <div className="container mx-auto px-8 relative z-10 max-w-6xl">
+          <motion.div className="mb-24" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }}>
+            <motion.p variants={fadeUp} className="text-yellow-500/60 text-[10px] tracking-[0.4em] uppercase mb-4 font-medium">Service Modules</motion.p>
+            <motion.h2 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-black text-white/90 tracking-[-0.03em] max-w-xl">
+              Strategic<br />Implementation
+            </motion.h2>
+          </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+            variants={stagger}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
@@ -132,23 +125,21 @@ export default function Home() {
               const Icon = LucideIcons[service.iconName];
               return (
                 <motion.div key={service.id} variants={fadeUp} custom={index}>
-                  <Link to={`/service/${service.id}`} className="group block relative overflow-hidden cursor-pointer">
+                  <Link to={`/service/${service.id}`} className="group block cursor-pointer">
                     <motion.div
-                      whileHover={{ scale: 1.02, borderColor: 'rgba(234,179,8,0.5)' }}
-                      transition={{ duration: 0.25 }}
-                      className="relative bg-black h-full p-8 md:p-10 border border-neutral-800 flex flex-col justify-between"
+                      whileHover={{ y: -4, transition: { duration: 0.3 } }}
+                      className="glass-card rounded-2xl p-8 h-full flex flex-col justify-between transition-all duration-500"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                       <div>
-                        <div className="w-14 h-14 bg-neutral-900 border border-neutral-800 flex items-center justify-center mb-8 group-hover:border-yellow-500/50 group-hover:bg-yellow-500/10 transition-all duration-250">
-                          {Icon && <Icon className="w-6 h-6 text-yellow-500" strokeWidth={1.5} />}
+                        <div className="w-12 h-12 rounded-xl bg-yellow-500/[0.06] border border-yellow-500/10 flex items-center justify-center mb-8 group-hover:bg-yellow-500/10 group-hover:border-yellow-500/30 transition-all duration-500">
+                          {Icon && <Icon className="w-5 h-5 text-yellow-500/70 group-hover:text-yellow-500 transition-colors duration-300" strokeWidth={1.5} />}
                         </div>
-                        <h4 className="text-xl font-bold mb-4 text-white uppercase tracking-tight group-hover:text-yellow-500 transition-colors duration-200">{service.title}</h4>
-                        <p className="text-neutral-400 text-sm leading-relaxed mb-8">{service.shortDesc}</p>
+                        <h4 className="text-lg font-bold mb-3 text-white/80 group-hover:text-yellow-500/90 transition-colors duration-300 tracking-tight">{service.title}</h4>
+                        <p className="text-white/25 text-sm leading-relaxed font-light">{service.shortDesc}</p>
                       </div>
-                      <div className="flex items-center justify-between mt-auto border-t border-neutral-900 pt-6">
-                        <span className="text-yellow-500 text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-200">Access Module</span>
-                        <LucideIcons.ArrowUpRight className="w-5 h-5 text-neutral-600 group-hover:text-yellow-500 ml-auto transition-colors duration-200" />
+                      <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/[0.04]">
+                        <span className="text-yellow-500/40 text-[10px] uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 transition-opacity duration-300">Explore</span>
+                        <LucideIcons.ArrowUpRight className="w-4 h-4 text-white/10 group-hover:text-yellow-500/60 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </div>
                     </motion.div>
                   </Link>
@@ -159,18 +150,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════════ PORTFOLIO ═══════════════════ */}
-      <section className="py-32 bg-black border-y border-yellow-500/10 relative overflow-hidden">
-        <div className="absolute right-0 top-0 w-1/2 h-full bg-yellow-500/5 blur-[150px] pointer-events-none"></div>
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div className="text-center mb-24" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
-            <motion.h2 variants={fadeUp} className="text-sm text-yellow-500 font-medium tracking-[0.3em] uppercase mb-4">Global Deployments</motion.h2>
-            <motion.h3 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight">System Architecture Visualized</motion.h3>
+      {/* ════════════════════════════════════════════════════════════
+          PORTFOLIO — Atmospheric, bloom-lit cards
+      ════════════════════════════════════════════════════════════ */}
+      <section className="py-40 relative overflow-hidden">
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/[0.03] rounded-full blur-[150px] pointer-events-none" />
+        <div className="container mx-auto px-8 relative z-10 max-w-6xl">
+          <motion.div className="text-center mb-24" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }}>
+            <motion.p variants={fadeUp} className="text-yellow-500/60 text-[10px] tracking-[0.4em] uppercase mb-4 font-medium">Portfolio</motion.p>
+            <motion.h2 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-black text-white/90 tracking-[-0.03em]">
+              Selected Works
+            </motion.h2>
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-3 gap-4"
+            variants={stagger}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
@@ -180,18 +175,19 @@ export default function Home() {
                 key={index}
                 variants={fadeUp}
                 custom={index}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-                className="group relative overflow-hidden aspect-[3/4] bg-neutral-900 border border-neutral-800 cursor-pointer"
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.4 }}
+                className="group relative overflow-hidden rounded-2xl aspect-[3/4] cursor-pointer"
               >
-                <div className="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-1000 group-hover:scale-110 filter grayscale group-hover:grayscale-0" style={{ backgroundImage: `url(${item.image})` }}></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent opacity-90"></div>
-                <div className="absolute inset-x-0 bottom-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                    <span className="text-yellow-500 text-xs font-medium uppercase tracking-widest">{item.category}</span>
+                <div className="absolute inset-0 bg-cover bg-center transition-all duration-[1.5s] group-hover:scale-110 filter grayscale group-hover:grayscale-0 opacity-40 group-hover:opacity-60" style={{ backgroundImage: `url(${item.image})` }} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                <div className="absolute inset-0 border border-white/[0.04] rounded-2xl group-hover:border-yellow-500/20 transition-colors duration-500" />
+                <div className="absolute inset-x-0 bottom-0 p-8">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="w-1.5 h-1.5 bg-yellow-500/60 rounded-full" />
+                    <span className="text-yellow-500/50 text-[10px] uppercase tracking-[0.3em]">{item.category}</span>
                   </div>
-                  <h4 className="text-white text-3xl font-black uppercase tracking-tight">{item.title}</h4>
+                  <h4 className="text-white/80 text-2xl font-bold tracking-tight group-hover:text-white transition-colors duration-300">{item.title}</h4>
                 </div>
               </motion.div>
             ))}
@@ -199,61 +195,48 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════════ CONTACT / LEAD GEN ═══════════════════ */}
-      <section id="contact" className="py-32 relative">
-        <div className="container mx-auto px-6 max-w-4xl relative z-10">
+      {/* ════════════════════════════════════════════════════════════
+          CONTACT — Minimal, atmospheric lead capture
+      ════════════════════════════════════════════════════════════ */}
+      <section id="contact" className="py-40 relative">
+        <div className="absolute right-0 top-0 w-[500px] h-[500px] bg-yellow-500/[0.03] rounded-full blur-[150px] pointer-events-none" />
+        <div className="container mx-auto px-8 max-w-3xl relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 60 }}
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="bg-neutral-900 border border-yellow-500/20 p-10 md:p-16 relative overflow-hidden"
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="glass-card rounded-3xl p-10 md:p-16 relative overflow-hidden"
           >
-            <div className="absolute top-0 left-0 w-2 h-full bg-yellow-500"></div>
+            {/* Accent line */}
+            <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-yellow-500/20 to-transparent" />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-sm text-yellow-500 font-medium tracking-[0.3em] uppercase mb-4">Secure Network</h2>
-                <h3 className="text-4xl font-black text-white uppercase tracking-tight mb-6">Initialize Partnership Protocol</h3>
-                <p className="text-neutral-400 text-sm leading-relaxed mb-8">Enter your secure communication terminal address to establish a direct link with our global consulting matrix.</p>
-                <div className="flex gap-6 items-center border-t border-neutral-800 pt-6">
-                  <div className="text-center">
-                    <div className="text-2xl font-black text-white">24/7</div>
-                    <div className="text-[10px] text-neutral-500 uppercase tracking-widest">Node Uptime</div>
-                  </div>
-                  <div className="w-px h-10 bg-neutral-800"></div>
-                  <div className="text-center">
-                    <div className="text-2xl font-black text-white">100%</div>
-                    <div className="text-[10px] text-neutral-500 uppercase tracking-widest">Data Security</div>
-                  </div>
-                </div>
-              </div>
-
-              <form onSubmit={handleLeadGen} className="flex flex-col gap-6">
-                <div>
-                  <label htmlFor="emailInput" className="block text-xs font-medium text-yellow-500 mb-2 uppercase tracking-widest">Target Email Vector</label>
-                  <input
-                    type="email"
-                    id="emailInput"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-black border border-neutral-700 px-6 py-4 text-white focus:outline-none focus:border-yellow-500 transition-colors duration-200 placeholder:text-neutral-700"
-                    placeholder="sysadmin@enterprise.com"
-                  />
-                </div>
-                <motion.button
-                  disabled={isSubmitting}
-                  type="submit"
-                  whileHover={{ scale: 1.02, boxShadow: '0 0 20px rgba(234,179,8,0.3)' }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full bg-yellow-500 text-black font-black uppercase tracking-[0.2em] py-5 transition-colors duration-200 flex justify-center items-center gap-2 disabled:opacity-50 border-none cursor-pointer"
-                >
-                  {isSubmitting ? 'Establishing Connection...' : 'Establish Connection'} <LucideIcons.Terminal className="w-5 h-5"/>
-                </motion.button>
-                <p className="text-neutral-600 text-[10px] uppercase text-center mt-1 tracking-wider">By submitting you agree to our automated lead tracking telemetry.</p>
-              </form>
+            <div className="text-center mb-12">
+              <p className="text-yellow-500/60 text-[10px] tracking-[0.4em] uppercase mb-4 font-medium">Connection</p>
+              <h2 className="text-3xl md:text-4xl font-black text-white/90 tracking-tight mb-4">Initialize Partnership</h2>
+              <p className="text-white/25 font-light text-sm max-w-md mx-auto">Establish a direct link with our global consulting network.</p>
             </div>
+
+            <form onSubmit={handleLeadGen} className="max-w-md mx-auto flex flex-col gap-5">
+              <div>
+                <label htmlFor="emailInput" className="block text-[10px] text-yellow-500/50 mb-2 uppercase tracking-[0.3em] font-medium">Email Address</label>
+                <input
+                  type="email" id="emailInput" required value={email} onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-5 py-4 text-white/80 text-sm focus:outline-none focus:border-yellow-500/30 focus:bg-white/[0.05] transition-all duration-300 placeholder:text-white/15"
+                  placeholder="you@enterprise.com"
+                />
+              </div>
+              <motion.button
+                disabled={isSubmitting}
+                type="submit"
+                whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(234,179,8,0.12)' }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-500/90 font-bold uppercase tracking-[0.2em] text-xs py-4 rounded-xl transition-all duration-300 cursor-pointer disabled:opacity-40 hover:bg-yellow-500/15 hover:border-yellow-500/40 flex items-center justify-center gap-2"
+              >
+                {isSubmitting ? 'Connecting...' : 'Establish Connection'} <LucideIcons.Terminal className="w-4 h-4" />
+              </motion.button>
+              <p className="text-white/10 text-[9px] uppercase text-center tracking-[0.2em]">Automated lead telemetry active</p>
+            </form>
           </motion.div>
         </div>
       </section>
